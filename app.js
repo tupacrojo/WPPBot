@@ -41,7 +41,7 @@ app.post("/webhook", (req, res) => {
     ) {
       let phone_number_id = req.body.entry[0].changes[0].value.metadata.phone_number_id;
       let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
-      let media_id = req.body.entry[0].changes[0].value.messages[0].image.id;
+      let media_id = req.body.entry[0].changes[0].value.messages[0].image;
       let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
       axios({
         method: "POST", // Required, HTTP method, a string, e.g. POST, GET
@@ -62,23 +62,21 @@ app.post("/webhook", (req, res) => {
         headers: { "Content-Type": "application/json" },
       });
 
-     /* ///
-      var request2 = require("request");
-      var options = {
-        method: "GET",
-        url: "https://graph.facebook.com/v16.0/" + media_id,
-        headers: {
-          Authorization: token,
-        },
-      };
-      request2(options, function (error, response) {
-        if (error) throw new Error(error);
-        console.log(response.body);
-      });*/
-      
+       var options = {
+         method: "GET",
+         url: "https://graph.facebook.com/v16.0/" + media_id,
+         headers: {
+           Authorization: token,
+         },
+       };
+       request(options, function (error, response) {
+         if (error) throw new Error(error);
+         console.log(response.body);
+       });
 
-      
-      
+
+
+
     }
     res.sendStatus(200);
   } else {
